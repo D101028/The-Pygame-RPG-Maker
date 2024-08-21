@@ -1,0 +1,20 @@
+{
+    "player-status": {
+        "pos": [
+            55,
+            32
+        ],
+        "status": "up_idle",
+        "map": "Map03"
+    },
+    "switches": {
+        "math-picture-switch": false,
+        "map-2-switch-1": true,
+        "map-2-switch-2": true,
+        "map-2-switch-3": true,
+        "map-2-fish-help-over": false
+    },
+    "variables": {
+        "map-2-fish-help": 2
+    }
+}

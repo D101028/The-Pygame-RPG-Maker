@@ -1,0 +1,143 @@
+{
+    "name": "Map01", 
+    "csvMap": "../Map/map01", 
+    "ground": "../Graphics/tilemap/ground01.png", 
+    "BGM": null, 
+    "BGS": "../Audio/BGS/exterior_garden_1.ogg", 
+    "ground-SE": [
+        {
+            "id": 0, 
+            "path": "../Audio/SE/walking_on_the_gravel.ogg"
+        }, 
+        {
+            "id": 1, 
+            "path": "../Audio/SE/walking_on_hard_floor.ogg"
+        }
+    ], 
+    "script": "../Script/script01.yaml", 
+    "events": [
+        {
+            "self-switches": {}, 
+            "self-variables": {
+                "first-self-variable": 0
+            }, 
+            "pages": [
+                {
+                    "condition": null, 
+                    "trigger": "Player Touch", 
+                    "contents": [
+                        ["Change Map", {
+                            "to_map": "Map02", 
+                            "exit_sound": "../Audio/SE/door_open.ogg", 
+                            "enter_sound": "../Audio/SE/door_close.ogg", 
+                            "player_status": {
+                                "pos": [14, 28], 
+                                "status": "up_idle", 
+                                "map": "Map02"
+                            }
+                        }]
+                    ]
+                }
+            ]
+        }, 
+        {
+            "self-switches": {
+                "loop": true, 
+                "answered": false
+            }, 
+            "self-variables": {}, 
+            "pages": [
+                {
+                    "condition": null, 
+                    "trigger": "Action Button", 
+                    "contents": [
+                        ["Show Text", {
+                            "script_ranges": ["1-7"]
+                        }], 
+                        ["Set Global Switch", {
+                            "switch": "math-picture-switch", 
+                            "value": true
+                        }], 
+                        ["Loop", {
+                            "condition": "s[loop]", 
+                            "do": [
+                                
+                                ["Show Choices", {
+                                    "script_ranges": ["1-4"], 
+                                    "after": {
+                                        "1": [["Show Text", {
+                                            "script_ranges": ["8-9"]
+                                        }]], 
+                                        "2": [["Show Text", {
+                                            "script_ranges": ["8-9"]
+                                        }]], 
+                                        "3": [["Set Global Switch", {
+                                            "switch": "math-picture-switch", 
+                                            "value": false
+                                        }], ["Show Text", {
+                                            "script_ranges": ["10-20"]
+                                        }], ["Set Local Switch", {
+                                            "switch": "loop", 
+                                            "value": false
+                                        }], ["Set Local Switch", {
+                                            "switch": "answered", 
+                                            "value": true
+                                        }]], 
+                                        "4": [["Show Text", {
+                                            "script_ranges": ["8-9"]
+                                        }]]
+                                    }
+                                }]
+                            ]
+                        }]
+                    ]
+                }, 
+                {
+                    "condition": "s[answered]", 
+                    "trigger": "Action Button", 
+                    "contents": [
+                        ["Show Text", {
+                            "script_ranges": ["21-22"]
+                        }]
+                    ]
+                }
+            ]
+        }, 
+        {
+            "self-switches": {}, 
+            "self-variables": {}, 
+            "pages": [
+                {
+                    "condition": null, 
+                    "trigger": "Action Button", 
+                    "contents": [
+                        ["Save Data", {}]
+                    ]
+                }
+            ]
+        }
+    ], 
+    "background-events": [
+        {
+            "self-switches": {}, 
+            "self-variables": {}, 
+            "pages": [
+                {
+                    "condition": null, 
+                    "trigger": "Parallel", 
+                    "contents": []
+                }, 
+                {
+                    "condition": "s[math-picture-switch]", 
+                    "trigger": "Parallel", 
+                    "contents": [
+                        ["Show Picture", {
+                            "filepath": "../Graphics/items/math01.png", 
+                            "is_alpha_animate": false
+                        }]
+                    ]
+                }
+            ]
+        }
+    ]
+}

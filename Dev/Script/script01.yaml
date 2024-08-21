@@ -1,0 +1,232 @@
+message_0:
+  speakerName: "[Me]"
+  text: |-
+    Hello World!
+    Good morning sekai!
+      indent
+    haha
+
+message_1:
+  speakerName: 我
+  text: |-
+    你好。
+message_2:
+  speakerName: 我
+  text: |-
+    請問這裡是哪裡？
+message_3:
+  speakerName: 樹
+  text: |-
+    你確定要問一棵樹嗎？
+message_4:
+  speakerName: 我
+  text: |-
+    好啊，沒問題阿。
+message_5:
+  speakerName: 樹
+  text: |-
+    在回答你的問題前，你必須回答我的問題。
+message_6:
+  speakerName: 我
+  text: |-
+    為何？
+message_7:
+  speakerName: 樹
+  text: |-
+    閉嘴。
+
+choice_1:
+  text: |-
+    2
+choice_2:
+  text: |-
+    3
+choice_3:
+  text: |-
+    4
+choice_4:
+  text: |-
+    5
+
+# wrong answer
+message_8:
+  speakerName: 樹
+  text: |-
+    答錯囉
+message_9:
+  speakerName: 樹
+  text: |-
+    你很笨耶
+
+# correct answer
+message_10:
+  speakerName: 樹
+  text: |-
+    你對了拉
+message_11:
+  speakerName: 樹
+  text: |-
+    你怎麼猜對的？
+message_12: 
+  speakerName: 樹
+  text: |-
+    ...
+message_13: 
+  speakerName: 樹
+  text: |-
+    算了，
+    我就回答你吧。
+message_14: 
+  speakerName: 我
+  text: |-
+    ...終於
+message_15: 
+  speakerName: 樹
+  text: |-
+    .................
+message_16: 
+  speakerName: 樹
+  text: |-
+    我不知道。
+message_17: 
+  speakerName: 我
+  text: |-
+    蛤
+message_18: 
+  speakerName: 樹
+  text: |-
+    我說我不知道這裡是哪裡
+message_19: 
+  speakerName: 樹
+  text: |-
+    一棵樹怎麼可能知道這裡是哪裡，
+    你問我這件事情就是你的不對。
+message_20: 
+  speakerName: 我
+  text: |-
+    靠邀，浪費我時間。
+
+# after finished
+message_21: 
+  speakerName: 樹
+  text: |-
+    我家很大，你可以來玩。
+message_22: 
+  speakerName: 我
+  text: |-
+    你閉嘴。
+
+
+message_23: 
+  speakerName: 
+  text: |-
+    
+message_24: 
+  speakerName: 
+  text: |-
+    
+message_25: 
+  speakerName: 
+  text: |-
+    
+message_26: 
+  speakerName: 
+  text: |-
+    
+message_27: 
+  speakerName: 
+  text: |-
+    
+message_28: 
+  speakerName: 
+  text: |-
+    
+message_29: 
+  speakerName: 
+  text: |-
+    
+message_30: 
+  speakerName: 
+  text: |-
+    
+message_31: 
+  speakerName: 
+  text: |-
+    
+message_32: 
+  speakerName: 
+  text: |-
+    
+message_33: 
+  speakerName: 
+  text: |-
+    
+message_34: 
+  speakerName: 
+  text: |-
+    
+message_35: 
+  speakerName: 
+  text: |-
+    
+message_36: 
+  speakerName: 
+  text: |-
+    
+message_37: 
+  speakerName: 
+  text: |-
+    
+message_38: 
+  speakerName: 
+  text: |-
+    
+message_39: 
+  speakerName: 
+  text: |-
+    
+message_40: 
+  speakerName: 
+  text: |-
+    
+message_41: 
+  speakerName: 
+  text: |-
+    
+message_42: 
+  speakerName: 
+  text: |-
+    
+message_43: 
+  speakerName: 
+  text: |-
+    
+message_44: 
+  speakerName: 
+  text: |-
+    
+message_45: 
+  speakerName: 
+  text: |-
+    
+message_46: 
+  speakerName: 
+  text: |-
+    
+message_47: 
+  speakerName: 
+  text: |-
+    
+message_48: 
+  speakerName: 
+  text: |-
+    
+message_49: 
+  speakerName: 
+  text: |-
+    
+message_50: 
+  speakerName: 
+  text: |-
+    
+

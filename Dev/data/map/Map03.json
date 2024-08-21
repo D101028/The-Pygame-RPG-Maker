@@ -1,0 +1,57 @@
+{
+    "name": "Map03",
+    "csvMap": "../Map/map03",
+    "ground": "../Graphics/tilemap/ground03.png",
+    "BGM": null,
+    "BGS": null,
+    "ground-SE": [
+       {
+           "id": 0,
+           "path": "../Audio/SE/walking_on_hard_floor.ogg"
+       }
+    ],
+    "script": "../Script/script03.yaml",
+    "events": [
+        {
+            "self-switches": {}, 
+            "self-variables": {}, 
+            "pages": [
+                {
+                    "condition": null,
+                    "trigger": "Action Button",
+                    "contents": [
+                        ["Save Data", {}]
+                    ]
+                }
+            ]
+        }
+    ],
+    "background-events": [
+        {
+            "self-switches": {
+                "cover-animate": true
+            }, 
+            "self-variables": {}, 
+            "pages": [
+                {
+                    "condition": null, 
+                    "trigger": "Parallel", 
+                    "contents": []
+                }, 
+                {
+                    "condition": "s[cover-animate]",
+                    "trigger": "Parallel",
+                    "contents": [
+                        ["Open Dark Cover", {
+                            "size": 128, 
+                            "is_animate": true
+                        }], 
+                        ["Change Local Switch", {
+                            "switch": "cover-animate" 
+                        }]
+                    ]
+                }
+            ]
+        }
+    ]
+}

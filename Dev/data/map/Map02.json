@@ -1,0 +1,230 @@
+{
+    "name": "Map02",
+    "csvMap": "../Map/map02",
+    "ground": "../Graphics/tilemap/ground02.png",
+    "BGM": null,
+    "BGS": "../Audio/BGS/Darkness.ogg",
+    "ground-SE": [
+        {
+            "id": 0,
+            "path": "../Audio/SE/walking_on_hard_floor.ogg"
+        }
+    ],
+    "script": "../Script/script02.yaml",
+    "events": [
+        {
+            "self-switches": {
+                "bool": true
+            }, 
+            "self-variables": {}, 
+            "pages": [
+                {
+                    "condition": null, 
+                    "trigger": "Player Touch", 
+                    "contents": [
+                        ["Change Map", {
+                            "to_map": "Map01", 
+                            "exit_sound": "../Audio/SE/door_open.ogg", 
+                            "enter_sound": "../Audio/SE/door_close.ogg", 
+                            "player_status": {
+                                "pos": [65,61], 
+                                "status": "down", 
+                                "map": "Map01"
+                            }
+                        }]
+                    ]
+                }
+            ]
+        }, 
+        {
+            "self-switches": {}, 
+            "self-variables": {}, 
+            "pages": [
+                {
+                    "condition": null, 
+                    "trigger":"Action Button", 
+                    "contents": [
+                        ["Show Text", {
+                            "script_ranges": ["1-1"]
+                        }], 
+                        ["Set Global Switch", {
+                            "switch": "map-2-switch-1", 
+                            "value": true
+                        }]
+                    ]
+                }, 
+                {
+                    "condition": "s[map-2-fish-help-over]", 
+                    "trigger": "Action Button", 
+                    "contents": []
+                }, 
+                {
+                    "condition": "v[map-2-fish-help] == 1", 
+                    "trigger": "Action Button", 
+                    "contents": [
+                        ["Show Text", {
+                            "script_ranges": ["17-17"]
+                        }]
+                    ]
+                }, 
+                {
+                    "condition": "v[map-2-fish-help] == 2", 
+                    "trigger": "Action Button", 
+                    "contents": []
+                }, 
+                {
+                    "condition": "s[map-2-switch-3]", 
+                    "trigger":"Action Button", 
+                    "contents": [
+                        ["Show Text", {
+                            "script_ranges": ["5-6"]
+                        }], 
+                        ["Show Choices", {
+                            "script_ranges": ["1-3"], 
+                            "after": {
+                                "1": [
+                                    ["Set Global Variable", {
+                                        "variable": "map-2-fish-help", 
+                                        "value": 1
+                                    }], 
+                                    ["Show Text", {
+                                        "script_ranges": ["7-11"]
+                                    }]
+                                ], 
+                                "2": [
+                                    ["Set Global Variable", {
+                                        "variable": "map-2-fish-help", 
+                                        "value": 1
+                                    }], 
+                                    ["Show Text", {
+                                        "script_ranges": ["7-11"]
+                                    }]
+                                ], 
+                                "3": [
+                                    ["Set Global Variable", {
+                                        "variable": "map-2-fish-help", 
+                                        "value": 2
+                                    }], 
+                                    ["Show Text", {
+                                        "script_ranges": ["12-16"]
+                                    }]
+                                ]
+                            }
+                        }]
+                    ]
+                }
+            ]
+        }, 
+        {
+            "self-switches": {}, 
+            "self-variables": {}, 
+            "pages": [
+                {
+                    "condition": null, 
+                    "trigger":"Action Button", 
+                    "contents": [
+                        ["Show Text", {
+                            "script_ranges": ["2-2"]
+                        }], 
+                        ["Set Global Switch", {
+                            "switch": "map-2-switch-2", 
+                            "value": true
+                        }]
+                    ]
+                }, {
+                    "condition": "s[map-2-switch-3]", 
+                    "trigger":"Action Button", 
+                    "contents": [
+                        ["Show Text", {
+                            "script_ranges": ["3-4"]
+                        }]
+                    ]
+                }
+            ]
+        }, 
+        {
+            "self-switches": {}, 
+            "self-variables": {}, 
+            "pages": [
+                {
+                    "condition": null, 
+                    "trigger": "Player Touch", 
+                    "contents": [
+                        ["Conditional Branch", {
+                            "if": "s[map-2-switch-1]", 
+                            "then": [
+                                ["Conditional Branch", {
+                                    "if": "s[map-2-switch-2]", 
+                                    "then": [
+                                        ["Set Global Switch", {
+                                            "switch": "map-2-switch-3", 
+                                            "value": true
+                                        }]
+                                    ]
+                                }]
+                            ]
+                        }], 
+                        ["Change Map", {
+                            "to_map": "Map02", 
+                            "exit_sound": "../Audio/SE/door_open.ogg", 
+                            "enter_sound": "../Audio/SE/door_close.ogg", 
+                            "player_status": {
+                                "pos": [14, 28], 
+                                "status": "up_idle", 
+                                "map": "Map02"
+                            }
+                        }]
+                    ]
+                }
+            ]
+        }, 
+        {
+            "self-switches":{}, 
+            "self-variables":{}, 
+            "pages":[
+                {
+                    "condition": null, 
+                    "trigger":"Action Button", 
+                    "contents":[]
+                }, 
+                {
+                    "condition": "v[map-2-fish-help] == 0", 
+                    "trigger": "Action Button", 
+                    "contents": [
+                        ["Game Over", {
+                            "script_ranges": ["19-19"], 
+                            "play_sound": "../Audio/SE/SE_BoneBreak2_RM.ogg"
+                        }]
+                    ]
+                }, 
+                {
+                    "condition": "v[map-2-fish-help] == 1", 
+                    "trigger": "Action Button", 
+                    "contents": [
+                        ["Game Over", {
+                            "script_ranges": ["18-18"], 
+                            "play_sound": "../Audio/SE/SE_BoneBreak2_RM.ogg"
+                        }]
+                    ]
+                }, 
+                {
+                    "condition": "v[map-2-fish-help] == 2", 
+                    "trigger": "Action Button", 
+                    "contents": [
+                        ["Change Map", {
+                            "to_map": "Map03", 
+                            "exit_sound": "../Audio/SE/door_open.ogg", 
+                            "enter_sound": "../Audio/SE/door_close.ogg", 
+                            "player_status": {
+                                "pos": [58,32], 
+                                "status": "left", 
+                                "map": "Map03"
+                            }
+                        }]
+                    ]
+                }
+            ]
+        }
+    ], 
+    "background-events": []
+}

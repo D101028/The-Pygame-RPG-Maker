@@ -1,0 +1,111 @@
+message_0:
+  speakerName: "[Me]"
+  text: |-
+    Hello World!
+    Good morning sekai!
+      indent
+    haha
+message_1:
+  speakerName: null
+  text: |-
+    漂亮的人魚雕像。
+message_2:
+  speakerName: null
+  text: |-
+    雄偉的銅人。
+
+message_3:
+  speakerName: 我
+  text: |-
+    你有多快？
+message_4:
+  speakerName: 銅人
+  text: |-
+    供三小
+
+message_5:
+  speakerName: 人魚雕像
+  text: |-
+    你需要幫助嗎？
+message_6:
+  speakerName: 人魚雕像
+  text: |-
+    我或許可以幫到你喔～
+
+
+choice_1:
+  text: |-
+    你能幫到我嗎？
+choice_2:
+  text: |-
+    你誰啊
+choice_3:
+  text: |-
+    我想進到下一關，可以幫幫我嗎？
+
+# 1, 2
+message_7: 
+  speakerName: 人魚雕像
+  text: |-
+    喂，屁孩
+message_8: 
+  speakerName: 人魚雕像
+  text: |-
+    口氣不小嘛。
+message_9: 
+  speakerName: 人魚雕像
+  text: |-
+    看來你不想繼續通關囉？
+message_10: 
+  speakerName: 我
+  text: |-
+    我是智慧玩家，不需要提示也能通關。
+message_11: 
+  speakerName: 人魚雕像
+  text: |-
+    死屁孩，系系賀。
+
+# 3
+message_12: 
+  speakerName: 人魚雕像
+  text: |-
+    看在你彬彬有禮的份上，我就幫幫你吧。
+message_13: 
+  speakerName: 人魚雕像
+  text: |-
+    有沒有看到我身後的柱子？
+message_14: 
+  speakerName: 我
+  text: |-
+    有
+message_15: 
+  speakerName: 人魚雕像
+  text: |-
+    在柱子之後靠左的牆，有可互動的區域
+message_16: 
+  speakerName: 人魚雕像
+  text: |-
+    去觸發看看。
+
+# 1, 2 after
+message_17: 
+  speakerName: 人魚雕像
+  text: |-
+    你會後悔的。
+
+# 1, 2 event4
+message_18: 
+  speakerName: 
+  text: |-
+    你沒有接受人魚姐姐的幫助。
+
+# event4 with null
+message_19: 
+  speakerName: 
+  text: |-
+    你知道得太多了。。
+
+message_20: 
+  speakerName: 
+  text: |-
+    

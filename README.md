@@ -23,11 +23,14 @@ To build a RPG game by this maker, objects below are required.
 
     Every map has its own folder, in which there will be 5 csv files. 
 
-    1. map_Details.csv
-    2. map_Entities.csv
-    3. map_Events.csv
-    4. map_FloorBlocks.csv
-    5. map_Objects.csv
+    1. map_AnimationBlockDetails.csv
+    2. map_AnimationBlockObjects.csv
+    3. map_Details.csv
+    4. map_Entities.csv
+    5. map_Events.csv
+    6. map_FloorBlocks.csv
+    7. map_Groundtype.csv
+    8. map_Objects.csv
     
     Each file has rows * columns = height * width numbers, which denote the graphics/events id in each map. (-1 for null)
 
@@ -100,7 +103,7 @@ Other adjustable objects are showing below.
 
     If you are familiar with Python, you can make your own events by adding classes and functions in `./Dev/System/event`.
 
-    The game structures are demonstrated [here](./Tutorial/structures.md).
+    The game construction are demonstrated [here](./Tutorial/construction.md).
 
 ### How to run the game?
 

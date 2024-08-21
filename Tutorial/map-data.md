@@ -6,6 +6,7 @@ This documentation will introduce you the usage of map data in this project.
 - [Introduction](#introduction-of-main-construction)
 - [Part Introduction](#part-introduction)
 - [Event Unit](#event-unit)
+- [Page Unit](#page-unit)
 - [Command Unit](#command-unit)
 - [Command Usage](#command-usage)
 
@@ -237,10 +238,189 @@ It is strongly recommended to follow the recommendation to name the files and va
 
     Events that will be activated at the background. 
 
+    The `trigger` in the page unit in the events in `background-events` shouldn't be `Action Button` or `Player Touch`, and should only be `Autorun` or `Parallel`.
+
     Format: [Event Unit](#event-unit)
 
 ## Event Unit
 
+Format:
+```json
+{
+    "self-switches": {}, 
+    "self-variables": {}, 
+    "pages": [
+        /* page units */
+    ]
+}
+```
+
+- `self-switches`
+
+    Local switches of the event. Switches saved here will be discarded (refreshed) when the map unloaded (changed).
+
+    Format:
+    ```json
+    {
+        "self-switches": {
+            "switch-name": true,  /* a bool */
+            "switch-name-2": false
+        }
+    }
+    ```
+
+    Switch name mustn't have characters: `[`, `]`, ` `.
+
+- `self-variables`
+
+    Local variables of the event. Variables saved here will be discarded (refreshed) when the map unloaded (changed).
+
+    Format:
+    ```json
+    {
+        "self-variables": {
+            "variable-name": "value", /* a string */
+            "variable-name-2": "value2"
+        }
+    }
+    ```
+
+    Variable name mustn't have characters: `[`, `]`, ` `.
+
+- `pages`
+
+    A list contains several page units. 
+    
+    Just like `match` in Python. The begin of every page unit has a `condition` denoting if the case (page) is selected. And the selected page (as same as this event) will be activated when `trigger` condition is achieved. 
+
+    For details, view [Page Unit](#page-unit).
+
+## Page Unit
+
+Format:
+
+```json
+{
+    "condition": null, 
+    "trigger": "Action Button", 
+    "contents": [
+        /* command units */
+    ]
+}
+```
+
+- `condition`
+
+    The condition for whether to select this page. 
+
+    The value can be a string or null (null for true). The string law is showed below.
+
+    - `s[switch-name]`
+
+        Get the switch named "switch-name" from Local switches and Global switches respectively. If not found, raise an error. 
+    
+    - `v[variable-name] (operator) (value)`
+
+        Get the variable named "variable-name" from Local variables and Global variables respectively. If not found, raise an error. 
+
+        `(operator)` must be replaced by `==`, `>`, `<`, `>=`, `<=`, `!=`. 
+
+        `(value)` must be replaced by an integer like `0`, `-1`, `100`, or another variable. 
+
+- `trigger`
+
+    The type of how to trigger the event. 
+
+    There're 4 types, which are showing below.
+
+    - `Action Button`
+
+        Event will be activated when player presses the confirm key and character is facing and near to the event block. 
+
+    - `Player Touch`
+
+        Event will be activated when player touches the event block. 
+
+    - `Autorun`
+
+        Event will be activated while the page unit is selected. Player's movement will be locked during the Autorun events.
+
+    - `Parallel`
+
+        Similar to `Autorun`, but player's movement won't be blocked.
+
+- `contents`
+
+    List of command units. 
+
+    Format: [Command Unit](#command-unit)
+
+There must be one page unit in the pages which `condition` value must be null. 
+
 ## Command Unit
 
+Basis of the components of command unit: 
+```json
+["(Command Name)", {
+    /* parameters */
+}]
+```
+`(Command Name)` must be replaced by any command name listed in [Command Usage](#command-usage), and the parameters must be given properly. 
+
 ## Command Usage
+
+- `Print Test`
+
+    **Parameters:** 
+    ```json
+    {
+        "text": "value", /* a string */
+    }
+    ```
+
+    Print the text value in terminal. 
+
+- `Set Local Variable`
+
+    **Parameters:**
+    ```json
+    {
+        "variable": "value", /* a string */
+        "value": 0 /* an integer */
+    }
+    ```
+
+    Set a local variable. 
+
+- `Set Local Switch`
+
+    **Parameters:**
+    ```json
+    {
+        "switch": "value", // a string
+        "value": true // a bool
+    }
+    ```
+
+    Set a local switch.
+
+- `Set Global Variable`
+
+    **Parameters:**
+    ```json
+    {
+        "variable": "value", // a string
+        "value": 0, // an integer
+    }
+    ```
+
+    Set a global variable.
+
+- ``
+
+    **Parameters:**
+    ```json
+    {
+        
+    }
+    ```

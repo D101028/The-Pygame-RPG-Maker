@@ -50,7 +50,7 @@ variables: dict[str, int] = {
     ex. [pages][][condition] 以及 [pages][][][Conditional Branch][if]
         1. a switch (s[...])
         2. two int with an operator, " " between int and operator, 
-        available operator: > < != ==
+        available operator: > < != == >= <=
         Note. must be " == " not "==", name mustn't have " ", "[" or "]"
             1 == 2
             v[...] == 5
@@ -171,7 +171,7 @@ Set Local Variable(
     value: int
 )
 Set Local Switch(
-    variable: str, 
+    switch: str, 
     value: bool
 )
 Set Global Variable(
@@ -179,7 +179,7 @@ Set Global Variable(
     value: int
 )
 Set Global Switch(
-    variable: str, 
+    switch: str, 
     value: bool
 )
 Change Local Switch()

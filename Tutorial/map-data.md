@@ -313,7 +313,7 @@ Format:
 
     The condition for whether to select this page. 
 
-    The value can be a string or null (null for true). The string law is showed below.
+    The value can be a string or null (null for default). The string law is showed below.
 
     - `s[switch-name]`
 
@@ -410,11 +410,49 @@ Basis of the components of command unit:
     ```json
     {
         "variable": "value", // a string
-        "value": 0, // an integer
+        "value": 0 // an integer
     }
     ```
 
     Set a global variable.
+
+- `Set Global Switch`
+
+    **Parameters:**
+    ```json
+    {
+        "switch": "value", // a string
+        "value": true // an integer
+    }
+    ```
+
+    Set a global switch.
+
+- `Change Local Switch`
+
+    **Parameters:** unneccessary
+
+    Change local switch. 
+
+- `Change Global Switch`
+
+    **Parameters:** unneccessary
+
+    Change global switch.
+
+- `Erase Event`
+
+    **Parameters:** unneccessary
+    
+    Set the event that executes this command to a null event.
+
+- `Save Data`
+
+    **Parameters:** unneccessary
+
+    Open the save data surface. 
+    
+    Player's movement will be blocked. 
 
 - ``
 
@@ -424,3 +462,50 @@ Basis of the components of command unit:
         
     }
     ```
+
+- ``
+
+    **Parameters:**
+    ```json
+    {
+        
+    }
+    ```
+
+- ``
+
+    **Parameters:**
+    ```json
+    {
+        
+    }
+    ```
+
+- ``
+
+    **Parameters:**
+    ```json
+    {
+        
+    }
+    ```
+
+- ``
+
+    **Parameters:**
+    ```json
+    {
+        
+    }
+    ```
+
+- ``
+
+    **Parameters:**
+    ```json
+    {
+        
+    }
+    ```
+
+

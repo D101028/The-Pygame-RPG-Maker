@@ -269,7 +269,7 @@ Format:
     }
     ```
 
-    Switch name mustn't have characters: `[`, `]`, ` `.
+    Switch name mustn't have characters: `[`, `]`, space.
 
 - `self-variables`
 
@@ -285,7 +285,7 @@ Format:
     }
     ```
 
-    Variable name mustn't have characters: `[`, `]`, ` `.
+    Variable name mustn't have characters: `[`, `]`, space.
 
 - `pages`
 
@@ -355,7 +355,7 @@ Format:
 
     Format: [Command Unit](#command-unit)
 
-There must be one page unit in the pages which `condition` value must be null. 
+There must be one page unit in the pages which `condition` value is null. 
 
 ## Command Unit
 

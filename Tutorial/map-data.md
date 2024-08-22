@@ -454,58 +454,191 @@ Basis of the components of command unit:
     
     Player's movement will be blocked. 
 
-- ``
+- `Change Map`
 
     **Parameters:**
     ```json
     {
-        
+        "to_map": "Map01", // a string 
+        "exit_sound": "/path/to/sound/file", // a string (default: null)
+        "enter_sound": "/path/to/sound/file", // a string (default: null)
+        "player_status": {
+            "pos": [0, 0], // a two-integer list
+            "status": "up_idle", // a string
+            "map": "Map01", // a string
+        }
     }
     ```
 
-- ``
+    @`to_map`: Name of the map you want to change to. \
+    @`exit_sound`: File path of the sound you want to play when unloading the map. \
+    @`enter_sound`: File path of the sound you want to play when entering the map. \
+    @`player_status`: A dictionary of player status when entering the map. 
+    - @`pos`: Player tile position. 
+    - @`status`: Player graphic status. 
+    - @`map`: Map name. (must be as same as the `to_map` parameter)
+
+    Change the map to another map. 
+
+- `Show Text`
 
     **Parameters:**
     ```json
     {
-        
+        "script_ranges": [
+            "1-5", "7-7"
+        ] // a string list
     }
     ```
 
-- ``
+    @`script_ranges`: String format: `(int1)-(int2)`, where `(int1)` and `(int2)` are two integers and `(int1) <= (int2)`, denoting the script ranges in file `script` from `message_(int1)` to `message_(int2)`. 
+
+    Show the dialog of text in the scripts in the file `script`. 
+
+    Player's movement will be blocked. 
+
+- `Show Choices`
 
     **Parameters:**
     ```json
     {
-        
+        "script_ranges": [
+            "1-3", "4-4"
+        ], // a string list
+        "after": {
+            "(choice 1)": [/* command units */], 
+            "(choice 2)": [/* command units */], 
+            "(choice 3)": [/* command units */], 
+            "(choice 4)": [/* command units */]
+        } // a dictionary, key: a string; value: a list of command units
     }
     ```
 
-- ``
+    @`script_ranges`: String format: `(int1)-(int2)`, where `(int1)` and `(int2)` are two integers and `(int1) <= (int2)`, denoting the script ranges in file `script` from `choice_(int1)` to `choice_(int2)`. \
+    @`after`: A dictionary, in which keys must be the choice strings, and values must be a list of command units. 
+
+    Show the dialog of choices in the scripts in the file `script`. The value of `after` (command units) will be run when the choice of its key are chosen. 
+
+    Player's movement will be blocked. 
+
+- `Show Picture`
 
     **Parameters:**
     ```json
     {
-        
+        "filepath": "/path/to/picture", // a string
+        "is_alpha_animate": true // a bool (default: false)
     }
     ```
 
-- ``
+    @`filepath`: The file path of a picture you want to show. \
+    @`is_alpha_animate`: Whether the enter/exit animation should be played. 
+
+    Show the given picture on the screen. 
+
+    Player's movement will be blocked.
+
+- `Conditional Branch`
 
     **Parameters:**
     ```json
     {
-        
+        "if": "s[switch-name]", // a string
+        "then": [/* command units */], // a list of command units
+        "else": [/* command units */] // a list of command units (default: null)
     }
     ```
 
-- ``
+    @`if`: A condition-type string (such as a switch, variables with operator) \
+    @`then`: Command units here will be run if the `if` condition is true. \
+    @`else`: Command units here will be run if the `if` condition is false. 
+
+    An if-else conditional branch. 
+
+- `Loop`
 
     **Parameters:**
     ```json
     {
-        
+        "condition": "s[switch-name]", // a string
+        "do": [/* command units */] // a list of command units
     }
     ```
 
+    @`condition`: A condition-type string (such as a switch, variables with operator) \
+    @`do`: Command units here will be run looply if the `condition` is true until the `condition` turns false. 
 
+    A while-like loop. 
+
+- `Game Over`
+
+    **Parameters:**
+    ```json
+    {
+        "script_ranges": [
+            "1-2", "3-3"
+        ], // a string list (default: null)
+        "play_sound": "/path/to/sound" // a string (default: null)
+    }
+    ```
+    @`script_ranges`: String format: `(int1)-(int2)`, where `(int1)` and `(int2)` are two integers and `(int1) <= (int2)`, denoting the script ranges in file `script` from `message_(int1)` to `message_(int2)`. \
+    @`play_sound`: File path of the file you want to play. 
+
+    Show the game over surface and show the given text and play the given sound. 
+
+    Player can do nothing but open and manipulate the menu after triggering this command unit. 
+
+- `Open Dark Cover`
+
+    **Parameters:**
+    ```json
+    {
+        "size": 64, // an integer
+        "is_animate": false // a bool (default: false)
+    }
+    ```
+
+    @`size`: The radius of the bright area around the player's character. \
+    @`is_animate`: Whether to play the dark appearing animation. 
+
+    Open the dark surface to block player's vision. 
+
+- `Close Dark Cover`
+
+    **Parameters:**
+    ```json
+    {
+        "is_animate": false // a bool (default: false)
+    }
+    ```
+
+    @`is_animate`: Whether to play the dark removing animation. 
+
+    Close the dark surface that blocking player's vision. 
+
+- `Add Animation Block`
+
+    **Parameters:**
+    ```json
+    {
+        "unit_pos": [1, 2], // a two-integer list
+        "animation_id": 0, // an integer (default: null)
+        "file_path": "/path/to/graphic", // a string (default: null)
+        "animation_speed": 0.87, // a float (default: 0.15)
+        "unit_move_route": [
+            [0.1, 0.3], [8, 1.2]
+        ], // a list of two-float lists(default: null)
+        "interval": 87, // an interger (default: 60)
+        "loop": 3 // (default: -1)
+    }
+    ```
+
+    @`unit_pos`: The original tile position of the animation block. \
+    @`animation_id`: The id of the animation graphic. \
+    @`file_path`: The file path of the animation graphic. \
+    @`animation_speed`: The reciprocal of the frames number between the change of the animation. \
+    @`unit_move_route`: The tile positions that the animation block will move through. \
+    @`interval`: The frames number of the animation block moving between two adjacent positions. \
+    @`loop`: The number of how many times the animation block will move through the route repeadedly. 
+
+    Blit the animation block on the map. 

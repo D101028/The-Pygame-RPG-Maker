@@ -430,13 +430,23 @@ Basis of the components of command unit:
 
 - `Change Local Switch`
 
-    **Parameters:** unneccessary
+    **Parameters:** 
+    ```json
+    {
+        "switch": "value" // a string
+    }
+    ```
 
     Change local switch. 
 
 - `Change Global Switch`
 
-    **Parameters:** unneccessary
+    **Parameters:** 
+    ```json
+    {
+        "switch": "value" // a string
+    }
+    ```
 
     Change global switch.
 

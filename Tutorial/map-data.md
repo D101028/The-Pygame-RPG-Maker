@@ -238,7 +238,7 @@ It is strongly recommended to follow the recommendation to name the files and va
 
     Events that will be activated at the background. 
 
-    The `trigger` in the page unit in the events in `background-events` shouldn't be `Action Button` or `Player Touch`, and should only be `Autorun` or `Parallel`.
+    The `trigger` in the page unit in the events in `background-events` shouldn't be `Action Button` or `Player Touch`; namely, it should only be `Autorun` or `Parallel`.
 
     Format: [Event Unit](#event-unit)
 

@@ -5,9 +5,9 @@ from support import crop_img, fill_chr
 
 class AnimationBlock(pygame.sprite.Sprite):
     def __init__(self, unit_pos, groups, 
-                 animation_id: int = None, file_path: str = None, size = None, 
-                 animation_speed: float = None, 
-                 unit_move_route: list[tuple[float, float]] | None = None, interval: int = None, loop: int = None):
+                 animation_id: int | None = None, file_path: str | None = None, size = None, 
+                 animation_speed: float | None = None, 
+                 unit_move_route: list[tuple[float, float]] | None = None, interval: int | None = None, loop: int | None = None):
         """interval: frames of moving between two points"""
         if animation_id is None:
             if file_path is None:

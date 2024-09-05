@@ -4,6 +4,11 @@ A mini-RPG maker built with Python and Pygame.
 
 Requirements: Python 3.11, Pygame 2.5.2
 
+![image](./img/display1.png)
+![image](./img/display2.png)
+![image](./img/display3.png)
+▲ Sample images of the running game. 
+
 ## Tutorial
 
 ### How to build the game?

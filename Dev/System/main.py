@@ -1,6 +1,8 @@
-import pygame
 import sys
 
+import pygame
+
+from config import Config
 from debug import debug
 from mapctrl import MapCtrl
 from settings import *
@@ -11,7 +13,10 @@ class Game:
         # general setup
         pygame.init()
         self.screen = pygame.display.set_mode((WIDTH, HEIGTH))
-        pygame.display.set_caption('RPG')
+        pygame.display.set_caption(Config.NAME)
+        if Config.ICON not in (None, ""):
+            icon = pygame.image.load(Config.ICON)
+            pygame.display.set_icon(icon)
         self.clock = pygame.time.Clock()
 
         # map contral

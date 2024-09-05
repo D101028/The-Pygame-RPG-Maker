@@ -26,7 +26,7 @@ To build a RPG game by this maker, objects below are required.
 
     Map csv files are located at `./Dev/Map/map*/map_*.csv`. These files are aiming to let system know how to draw the map, including visible objects, invisible events, etc.
 
-    Every map has its own folder, in which there will be 5 csv files. 
+    Every map has its own folder, in which there will be 8 csv files. 
 
     1. map_AnimationBlockDetails.csv
     2. map_AnimationBlockObjects.csv

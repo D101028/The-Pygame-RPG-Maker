@@ -49,11 +49,6 @@
     }
     
     // load images
-    function createImg(code) {
-        const img = new Image();
-        img.src = `/tiles/${code}.png`;
-        return img;
-    }
     function createImgAndCrop(path, x = null, y = null, w = null, h = null) { 
         const img = new Image();
         img.src = `/get-image?image_path=${encodeURIComponent(path)}`;
@@ -93,39 +88,7 @@
             this.name = name;
         }
     }
-    function createEmptyStampsPage() {}
-    function loadStampsPageFromFolder() {}
-    function loadStampsPageFromSingleFile(imagePath, x = null, y = null, width = null, height = null) {
-        if (x === null) x = 0;
-        if (y === null) y = 0;
-        if (width === null) width = blockCols;
-        if (height === null) height = blockRows;
-
-        const url = `/get-image?image_path=${encodeURIComponent(imagePath)}`;
-
-        fetch(url)
-            .then(response => response.blob()) // 取得完整圖片 (Blob)
-            .then(blob => {
-                const img = new Image();
-                img.src = URL.createObjectURL(blob);
-                img.onload = function () {
-                    // 建立 Canvas 來處理裁剪
-                    let canvas = document.createElement("canvas");
-                    let ctx = canvas.getContext("2d");
-
-                    // 設定 Canvas 大小為裁剪區域
-                    canvas.width = width;
-                    canvas.height = height;
-
-                    // 在 Canvas 上裁剪圖片
-                    ctx.drawImage(img, x, y, width, height, 0, 0, width, height);
-
-                    // 轉換 Canvas 為 Base64，顯示在 img 標籤中
-                    document.getElementById(imgElementId).src = canvas.toDataURL("image/png");
-                };
-            })
-            .catch(error => console.error("Error fetching image:", error));
-    }
+    
     const stampsContainer = document.getElementById('stampsContainer');
     const stamps = [24, 33, 40, 41, 42, 43, 44, 45, 46, 46, 46];
     let selectedTile = 0;

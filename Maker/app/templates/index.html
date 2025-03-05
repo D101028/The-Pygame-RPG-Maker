@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TEST</title>
+    <link rel="stylesheet" href="/css/index.css">
+</head>
+<body>
+    <div class="navbar-container">
+        <div class="navbar">
+            <a>here is navbar</a>
+        </div>
+    </div>
+    
+    <div class="tool-bar-container">
+        <div class="tool-bar">
+            <!-- <div class="tool-item-selected" id="selectTool">select</div> -->
+            <div class="tool-item-selected" id="drawTool">draw</div>
+            <!-- <div class="tool-item" id="areaDrawTool">area draw</div> -->
+            <div class="tool-item" id="eraseTool">erase</div>
+            <!-- <div class="tool-item" id="eyedropTool">eyedrop</div> -->
+        </div>
+    </div>
+
+    <div class="middle-area">
+        <div class="main-screen-container">
+            <div class="main-screen" id="mainScreen"></div>
+        </div>
+        <div class="side-tool-bar">
+            <div class="layers-tool-container">
+                <a>Layers</a>
+                <div class="layers-container" id="layersContainer"></div>
+            </div>
+            <br>
+            <div class="stamps-tool-container">
+                <a>Tiles</a>
+                <div class="stamps-pages-container" id="stampsPagesContainer">
+                    <div class="stamps-container" id="stampsContainer"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="bottom-bar-container">
+        <div class="bottom-bar">
+            <div class="position-block">
+                <p>pos: <a class="plain-text" id="posText">null</a></p>
+            </div>
+        </div>
+    </div>
+    <script src="/js/index.js"></script>
+</body>
+</html>

@@ -1,0 +1,181 @@
+body {
+    height: 100vh;
+    background-color: #f0f0f0;
+    overflow: hidden;
+}
+.navbar {
+    background-color: #f0f0f0;
+}
+.navbar a {
+    color: #757575;
+}
+
+
+.tool-bar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.tool-item{
+    padding: 5px;
+    margin: 5px;
+    cursor: pointer;
+}
+.tool-item-selected {
+    padding: 5px;
+    margin: 5px;
+    cursor: pointer;
+    outline: 2px solid red;
+    background-color: #d5bcbc;
+}
+
+.middle-area {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    user-select: none; 
+}
+.side-tool-bar {
+    margin: 5px;
+    width: 240px;
+}
+.layers-tool-container {
+    justify-content: center;
+    align-items: center;
+}
+.stamps-tool-container {
+    justify-content: center;
+    align-items: center;
+}
+.layer-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.layers-container {
+    width: 95%;
+    height: 200px;
+    border: 1px solid #656363;
+    padding: 10px;
+    overflow: auto;
+    background-color: #f9f9f9;
+    display: flex;
+    flex-direction: column; /* 讓子元素垂直排列 */
+    align-items: stretch; /* 讓子元素佔滿寬度 */
+}
+.stamps-container {
+    width: 95%;
+    height: 200px;
+    border: 1px solid #656363;
+    padding: 10px;
+    overflow: auto;
+    background-color: #f9f9f9;
+}
+.rep-img {
+    cursor: pointer;
+    outline: 1px solid white;
+    margin: 2px;
+    width: 64px;
+    height: 64px;
+    object-fit: contain;
+}
+.rep-img-selected {
+    cursor: pointer;
+    outline: 2px solid red;
+    margin: 2px;
+    width: 64px;
+    height: 64px;
+    object-fit: contain;
+}
+
+.layer-rep, .layer-rep-selected { 
+    background-color: rgba(255, 255, 255, 0.5);
+    padding: 5px;
+    margin: 5px 0; /* 僅設定上下 margin，避免影響寬度 */
+    cursor: pointer;
+    width: 100%; /* 讓每個元素佔滿容器寬度 */
+    box-sizing: border-box; /* 確保 padding 不會影響 width */
+    overflow: hidden;
+}
+
+.layer-rep-selected {
+    background-color: rgba(235, 116, 116, 0.5);
+    outline: 2px solid red;
+}
+
+.layer-menu {
+    position: absolute;
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    display: none;
+    z-index: 1000;
+    width: 150px;
+}
+.layer-menu ul {
+    list-style: none;
+    padding: 8px 0;
+    margin: 0;
+}
+.layer-menu li {
+    padding: 10px 15px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+.layer-menu li:hover {
+    background: #f0f0f0;
+}
+
+.main-screen-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.main-screen {
+    border: 1px solid #000;
+    position: relative;
+    overflow: hidden;
+    user-select: none;
+    background-color: rgb(161, 160, 160);
+}
+.block {
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0);
+}
+.block-hover {
+    position: absolute;
+    background-color: rgba(176, 176, 255, 0.3);
+}
+.tile-sketch-img {
+    position: absolute;
+    pointer-events: none;
+    opacity: 0.5;
+}
+.tile-blit-img {
+    position: absolute;
+    pointer-events: none;
+}
+.tiles-frame {
+    position: absolute;
+    pointer-events: none;
+}
+.tile-img-container {
+    position: absolute;
+    pointer-events: none;
+}
+.canvas {
+    position: relative;
+    top: 0;
+    left: 0;
+}
+.outer-border {
+    position: absolute;
+    pointer-events: none;
+}
+
+
+.buttom-bar {
+    display: flex; 
+    align-items: left;
+}

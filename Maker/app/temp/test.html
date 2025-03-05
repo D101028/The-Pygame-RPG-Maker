@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>前端圖片裁剪</title>
+    <style>
+        #preview {
+            max-width: 100%;
+            display: block;
+            margin-bottom: 10px;
+        }
+        canvas {
+            border: 1px solid #000;
+        }
+    </style>
+</head>
+<body>
+    <h2>前端圖片裁剪</h2>
+
+    <input type="file" id="imageInput" accept="image/*"><br>
+    <img id="preview" style="display:none;">
+    
+    <label>X：</label><input type="number" id="x" value="0"><br>
+    <label>Y：</label><input type="number" id="y" value="0"><br>
+    <label>寬度：</label><input type="number" id="width" value="100"><br>
+    <label>高度：</label><input type="number" id="height" value="100"><br>
+
+    <button onclick="cropImage()">裁剪圖片</button>
+
+    <h3>裁剪後的圖片：</h3>
+    <canvas id="canvas"></canvas>
+
+    <script>
+        let img = new Image();
+
+        // 當用戶選擇圖片時，顯示預覽
+        document.getElementById("imageInput").addEventListener("change", function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    img.src = e.target.result;
+                    img.onload = function() {
+                        document.getElementById("preview").src = img.src;
+                        document.getElementById("preview").style.display = "block";
+                    }
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        function cropImage() {
+            let x = parseInt(document.getElementById("x").value);
+            let y = parseInt(document.getElementById("y").value);
+            let width = parseInt(document.getElementById("width").value);
+            let height = parseInt(document.getElementById("height").value);
+
+            // 建立 Canvas
+            let canvas = document.getElementById("canvas");
+            let ctx = canvas.getContext("2d");
+
+            // 設定 Canvas 大小
+            canvas.width = width;
+            canvas.height = height;
+
+            // 在 Canvas 上繪製裁剪後的圖像
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.drawImage(img, x, y, width, height, 0, 0, width, height);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,49 @@
+[
+    {
+        "name": "test", 
+        "type": "multitiles", 
+        "tiles": [
+            {
+                "path": "D:\\Projects\\Python\\pygame\\The-Pygame-RPG-Maker\\Maker\\app\\tiles\\24.png", 
+                "cutting-range": null
+            }, 
+            {
+                "path": "D:\\Projects\\Python\\pygame\\The-Pygame-RPG-Maker\\Maker\\app\\tiles\\33.png", 
+                "cutting-range": null
+            }, 
+            {
+                "path": "D:\\Projects\\Python\\pygame\\The-Pygame-RPG-Maker\\Maker\\app\\tiles\\36.png", 
+                "cutting-range": null
+            }, 
+            {
+                "path": "D:\\Projects\\Python\\pygame\\The-Pygame-RPG-Maker\\Maker\\app\\tiles\\40.png", 
+                "cutting-range": null
+            }, 
+            {
+                "path": "D:\\Projects\\Python\\pygame\\The-Pygame-RPG-Maker\\Maker\\app\\tiles\\41.png", 
+                "cutting-range": null
+            }, 
+            {
+                "path": "D:\\Projects\\Python\\pygame\\The-Pygame-RPG-Maker\\Maker\\app\\tiles\\42.png", 
+                "cutting-range": null
+            }, 
+            {
+                "path": "D:\\Projects\\Python\\pygame\\The-Pygame-RPG-Maker\\Maker\\app\\tiles\\43.png", 
+                "cutting-range": null
+            }, 
+            {
+                "path": "D:\\Projects\\Python\\pygame\\The-Pygame-RPG-Maker\\Maker\\app\\tiles\\46.png", 
+                "cutting-range": null
+            }
+        ]
+    }, 
+    {
+        "name": "test2", 
+        "type": "single-split", 
+        "path": "D:\\Projects\\Python\\pygame\\The-Pygame-RPG-Maker\\Maker\\app\\tiles\\24.png",
+        "cutting": {
+            "width": 64,
+            "height": 64
+        }
+    }
+]

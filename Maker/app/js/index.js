@@ -50,22 +50,30 @@
     
     // load images
     function createImgAndCrop(path, x = null, y = null, w = null, h = null) { 
-        const img = new Image();
-        img.src = `/get-image?image_path=${encodeURIComponent(path)}`;
-        if (x === null || y === null || w === null || h === null) {
-            return img;
-        }
-        // 創建新的圖像元素
-        const croppedImg = new Image();
-        const canvas = document.createElement('canvas');
-        const ctx = canvas.getContext('2d');
-        canvas.width = w;
-        canvas.height = h;
-        
-        // 在 canvas 上繪製圖片的指定區域
-        ctx.drawImage(img, x, y, w, h, 0, 0, w, h);
-        croppedImg.src = canvas.toDataURL(); // 轉換為 base64
-        return croppedImg;
+        return new Promise((resolve, reject) => {
+            const img = new Image();
+            img.src = `/get-image?image_path=${encodeURIComponent(path)}`;
+            img.onload = () => {
+                if (x === null || y === null || w === null || h === null) {
+                    return resolve(img); // 如果沒有裁剪區域，直接回傳圖片
+                }
+    
+                // 創建 canvas 來裁剪圖片
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+                canvas.width = w;
+                canvas.height = h;
+    
+                ctx.drawImage(img, x, y, w, h, 0, 0, w, h);
+                
+                const croppedImg = new Image();
+                croppedImg.src = canvas.toDataURL(); // 轉換為 base64
+                
+                croppedImg.onload = () => resolve(croppedImg);
+                croppedImg.onerror = reject;
+            };
+            img.onerror = reject;
+        });
     }
     
     // tile class
@@ -92,6 +100,7 @@
     const stampsContainer = document.getElementById('stampsContainer');
     let selectedTile = 0;
     const tilesArr = [];
+    let tileSetsLoaded = false;
     async function loadTilesSets(data) {
         let idx = 0;
         for (let tset of data) {
@@ -103,13 +112,13 @@
 
                     const fp = tset["tiles"][i]["path"];
                     if (tset["tiles"][i]["cutting-range"] === null) {
-                        img = createImgAndCrop(fp);
+                        img = await createImgAndCrop(fp);
                     } else {
                         const x = tset["tiles"][i]["cutting-range"]["x"];
                         const y = tset["tiles"][i]["cutting-range"]["y"];
                         const w = tset["tiles"][i]["cutting-range"]["w"];
                         const h = tset["tiles"][i]["cutting-range"]["h"];
-                        img = createImgAndCrop(fp, x, y, w, h);
+                        img = await createImgAndCrop(fp, x, y, w, h);
                     }
                     
                     tile.repEle = img.cloneNode(true);
@@ -145,43 +154,53 @@
                     throw new Error('Network response was not ok');
                 }
                 const imgShape = await response.json();
-                
-                for (let j = 0; j < imgShape["height"]; j += height) {
-                    for (let i = 0; i < imgShape["width"]; i += width) {
-                        const croppedImg = new Image();
-                        const canvas = document.createElement('canvas');
-                        const ctx = canvas.getContext('2d');
-                        canvas.width = width;
-                        canvas.height = height;
-                        
-                        ctx.drawImage(img, i, j, width, height, 0, 0, width, height);
-                        croppedImg.src = canvas.toDataURL(); // 轉換為 base64
 
-                        const tile = new Tile(idx);
-                        tile.repEle = croppedImg.cloneNode(true);
-                        tile.repEle.className = 'rep-img';
-                        tile.repEle.addEventListener('click', () => {
-                            for (let j = 0; j < tilesArr.length; j++) {
-                                tilesArr[j].repEle.className = 'rep-img';
+                console.log('check1');
+                await new Promise((resolve, reject) => {
+                    img.onload = () => {
+                        for (let j = 0; j < imgShape["height"]; j += height) {
+                            for (let i = 0; i < imgShape["width"]; i += width) {
+                                const croppedImg = new Image();
+                                const canvas = document.createElement('canvas');
+                                const ctx = canvas.getContext('2d');
+                                canvas.width = width;
+                                canvas.height = height;
+                                
+                                ctx.drawImage(img, i, j, width, height, 0, 0, width, height);
+                                croppedImg.src = canvas.toDataURL(); // 轉換為 base64
+
+                                const tile = new Tile(idx);
+                                tile.repEle = croppedImg.cloneNode(true);
+                                tile.repEle.className = 'rep-img';
+                                tile.repEle.addEventListener('click', () => {
+                                    for (let j = 0; j < tilesArr.length; j++) {
+                                        tilesArr[j].repEle.className = 'rep-img';
+                                    }
+                                    tile.repEle.className = 'rep-img-selected';
+                                    selectedTile = tile.code;
+                                });
+                                stampsContainer.appendChild(tile.repEle);
+                        
+                                tile.sketchEle = croppedImg.cloneNode(true);
+                                tile.sketchEle.className = 'tile-sketch-img';
+                        
+                                tile.blitEle = croppedImg.cloneNode(true);
+                                tile.blitEle.className = 'tile-blit-img';
+                        
+                                tilesArr.push(tile);
+                                idx++;
                             }
-                            tile.repEle.className = 'rep-img-selected';
-                            selectedTile = tile.code;
-                        });
-                        stampsContainer.appendChild(tile.repEle);
-                
-                        tile.sketchEle = croppedImg.cloneNode(true);
-                        tile.sketchEle.className = 'tile-sketch-img';
-                
-                        tile.blitEle = croppedImg.cloneNode(true);
-                        tile.blitEle.className = 'tile-blit-img';
-                
-                        tilesArr.push(tile);
-                        idx++;
+                        }
+                        resolve();
                     }
-                }
+                    img.onerror = reject
+                });
+                console.log('check2');
             }
         }
         tilesArr[selectedTile].repEle.className = 'rep-img-selected';
+
+        tileSetsLoaded = true;
     }
 
     class Block {
@@ -200,8 +219,18 @@
             this.isMouseEnter = false;
 
             this.screen.appendChild(this.ele);
-            
+
+            this.eventTriggerChecker = () => {
+                if (!tileSetsLoaded) return false;
+                return true;
+            }
+            this.initEventListeners();
+        }
+
+        initEventListeners() {
             this.ele.addEventListener('mouseenter', () => {
+                if (!this.eventTriggerChecker()) return ;
+
                 this.ele.className = 'block-hover';
                 posText.innerText = `(${this.x}, ${this.y})`;
 
@@ -224,6 +253,8 @@
             });
 
             this.ele.addEventListener('mousedown', () => {
+                if (!this.eventTriggerChecker()) return ;
+
                 if (currentTool === 'draw') {
                     this.drawTile();
                 } else if (currentTool === 'erase') {
@@ -232,6 +263,8 @@
             });
 
             this.ele.addEventListener('click', () => {
+                if (!this.eventTriggerChecker()) return ;
+
                 if (currentTool === 'draw') {
                     this.drawTile();
                 } else if (currentTool === 'erase') {
@@ -240,12 +273,16 @@
             });
 
             this.ele.addEventListener('mouseleave', () => {
+                if (!this.eventTriggerChecker()) return ;
+
                 this.ele.className = 'block';
                 posText.innerText = 'null';
 
                 // remove shown img
-                const img = tilesArr[selectedTile].sketchEle;
-                this.screen.removeChild(img);
+                if (currentTool === 'draw') {
+                    const img = tilesArr[selectedTile].sketchEle;
+                    this.screen.removeChild(img);
+                }
             });
         }
 
@@ -568,87 +605,100 @@
     // create canvas
     const canvas = new BGCanvas(mainScreen); 
 
-    // disable dragging
-    document.addEventListener("dragstart", function(event) {
-        event.preventDefault();
-    });
+    function registerEvents() {
+        // disable dragging
+        document.addEventListener("dragstart", function(event) {
+            event.preventDefault();
+        });
 
-    // disable right click
-    document.addEventListener('contextmenu', function(event) {
-        event.preventDefault(); 
-    });
+        // disable right click
+        document.addEventListener('contextmenu', function(event) {
+            event.preventDefault(); 
+        });
 
-    // customize scrolling
-    mainScreen.addEventListener('wheel', function(event) {
-        event.preventDefault(); 
-        const canvasLeft = canvas.getPosLeft(); 
-        const canvasTop = canvas.getPosTop(); 
-        const canvasWidth = blockCols * blockWidth * (canvas.scale / 100); 
-        const canvasHeight = blockRows * blockWidth * (canvas.scale / 100);
-        let newScale = canvas.scale; 
+        // customize scrolling
+        mainScreen.addEventListener('wheel', function(event) {
+            event.preventDefault(); 
+            const canvasLeft = canvas.getPosLeft(); 
+            const canvasTop = canvas.getPosTop(); 
+            const canvasWidth = blockCols * blockWidth * (canvas.scale / 100); 
+            const canvasHeight = blockRows * blockWidth * (canvas.scale / 100);
+            let newScale = canvas.scale; 
 
-        if (event.ctrlKey) {
-            // scaling
-            if (event.deltaY < 0) {
-                newScale += 20; 
-            } else {
-                newScale -= 20; 
-            }
-            // restrict range
-            if (newScale <= 10) {
-                newScale = 10; 
-            } else if (newScale >= 1000) {
-                newScale = 1000; 
-            }
-
-            canvas.resize(newScale, event.clientX, event.clientY);
-            
-        } else if (canvasWidth > screenWidth || canvasHeight > screenHeight) {
-            const delta = 30;
-            // if to fix X or Y 
-            const stickX = canvasWidth <= screenWidth;
-            const stickY = canvasHeight <= screenHeight;
-            let newLeft = canvasLeft;
-            let newTop = canvasTop;
-
-            // moving
-            if (event.shiftKey) {
-                if (event.deltaY < 0 && !stickY) {
-                    newLeft = canvasLeft + delta; 
-                } else if (event.deltaY > 0 && !stickY) {
-                    newLeft = canvasLeft - delta; 
+            if (event.ctrlKey) {
+                // scaling
+                if (event.deltaY < 0) {
+                    newScale += 20; 
+                } else {
+                    newScale -= 20; 
                 }
-            } else {
-                if (event.deltaX < 0 && !stickX) {
-                    newLeft = canvasLeft + delta;
-                } else if (event.deltaX > 0 && !stickX) {
-                    newLeft = canvasLeft - delta;
-                } else if (event.deltaY < 0 && !stickY) {
-                    newTop = canvasTop + delta;
-                } else if (event.deltaY > 0 && !stickY) {
-                    newTop = canvasTop - delta;
+                // restrict range
+                if (newScale <= 10) {
+                    newScale = 10; 
+                } else if (newScale >= 1000) {
+                    newScale = 1000; 
                 }
-            }
-            
-            // restrict range
-            if (!stickX) {
-                if (newLeft > 0) {
-                    newLeft = 0;
-                } else if (newLeft + canvasWidth - screenWidth < 0) {
-                    newLeft = screenWidth - canvasWidth;
-                }
-            }
-            if (!stickY) {
-                if (newTop > 0) {
-                    newTop = 0;
-                } else if (newTop + canvasHeight - screenHeight < 0) {
-                    newTop = screenHeight - canvasHeight;
-                }
-            }
 
-            canvas.setPos(newLeft, newTop);
-        }
-    }, { passive: false });
+                canvas.resize(newScale, event.clientX, event.clientY);
+                
+            } else if (canvasWidth > screenWidth || canvasHeight > screenHeight) {
+                const delta = 30;
+                // if to fix X or Y 
+                const stickX = canvasWidth <= screenWidth;
+                const stickY = canvasHeight <= screenHeight;
+                let newLeft = canvasLeft;
+                let newTop = canvasTop;
+
+                // moving
+                if (event.shiftKey) {
+                    if (event.deltaY < 0 && !stickY) {
+                        newLeft = canvasLeft + delta; 
+                    } else if (event.deltaY > 0 && !stickY) {
+                        newLeft = canvasLeft - delta; 
+                    }
+                } else {
+                    if (event.deltaX < 0 && !stickX) {
+                        newLeft = canvasLeft + delta;
+                    } else if (event.deltaX > 0 && !stickX) {
+                        newLeft = canvasLeft - delta;
+                    } else if (event.deltaY < 0 && !stickY) {
+                        newTop = canvasTop + delta;
+                    } else if (event.deltaY > 0 && !stickY) {
+                        newTop = canvasTop - delta;
+                    }
+                }
+                
+                // restrict range
+                if (!stickX) {
+                    if (newLeft > 0) {
+                        newLeft = 0;
+                    } else if (newLeft + canvasWidth - screenWidth < 0) {
+                        newLeft = screenWidth - canvasWidth;
+                    }
+                }
+                if (!stickY) {
+                    if (newTop > 0) {
+                        newTop = 0;
+                    } else if (newTop + canvasHeight - screenHeight < 0) {
+                        newTop = screenHeight - canvasHeight;
+                    }
+                }
+
+                canvas.setPos(newLeft, newTop);
+            }
+        }, { passive: false });
+    }
+
+    function initTest() {
+        // test map
+        let tilesLayer;
+        tilesLayer = canvas.addTilesLayer('test', 0);
+        tilesLayer.setTile(0, 0, 1);
+        tilesLayer.setTile(3, 3, 2);
+        tilesLayer = canvas.addTilesLayer('test1lzsodifjsdifjszdofijzsd;foizsjd;fi', 1);
+        tilesLayer.setTile(0, 1, 3);
+        canvas.selectLayer('test');
+    }
 
     async function main() {
         // fetch tiles sets info
@@ -659,17 +709,14 @@
         }
         const data = await response.json();
 
+        // register events
+        registerEvents();
+
         // load tiles sets
-        response = await loadTilesSets(data);
+        await loadTilesSets(data);
         
-        // test map
-        let tilesLayer;
-        tilesLayer = canvas.addTilesLayer('test', 0);
-        tilesLayer.setTile(0, 0, 1);
-        tilesLayer.setTile(3, 3, 2);
-        tilesLayer = canvas.addTilesLayer('test1lzsodifjsdifjszdofijzsd;foizsjd;fi', 1);
-        tilesLayer.setTile(0, 1, 3);
-        canvas.selectLayer('test');
+        // init test funciton
+        initTest();
     }
 
     main();

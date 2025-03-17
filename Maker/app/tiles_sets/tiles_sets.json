@@ -17,7 +17,7 @@
                 "cutting-range": null
             }, 
             {
-                "path": "D:\\Projects\\Python\\pygame\\pygame-rpg-2-graphics-edit\\Graphics\\Tilesets\\Dungeon_A1.png", 
+                "path": "D:\\Projects\\Python\\pygame\\pygame-rpg-2-graphics-edit\\Graphics\\Tilesets\\Dungeon_A1_resized.png", 
                 "cutting-range": {
                     "x": 0, 
                     "y": 0, 
@@ -50,7 +50,7 @@
     {
         "name": "test2", 
         "type": "single-split", 
-        "path": "D:\\Projects\\Python\\pygame\\pygame-rpg-2-graphics-edit\\Graphics\\Tilesets\\Dungeon_A1.png",
+        "path": "D:\\Projects\\Python\\pygame\\pygame-rpg-2-graphics-edit\\Graphics\\Tilesets\\Dungeon_A2_resized.png",
         "cutting": {
             "width": 64,
             "height": 64

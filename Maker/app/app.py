@@ -53,5 +53,9 @@ def load_tiles_sets():
 
     return jsonify(tiles_sets)
 
+@app.route('/favicon.ico')
+def favicon():
+    return send_file(r"D:\Projects\Python\pygame\The-Pygame-RPG-Maker\Maker\app\tiles\33.png")
+
 if __name__ == "__main__":
     app.run(debug=True)

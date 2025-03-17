@@ -57,18 +57,14 @@
         }
         // 創建新的圖像元素
         const croppedImg = new Image();
-        img.onload = () => {
-            const canvas = document.createElement('canvas');
-            const ctx = canvas.getContext('2d');
-            canvas.width = w;
-            canvas.height = h;
-            
-            // 在 canvas 上繪製圖片的指定區域
-            ctx.drawImage(img, x, y, w, h, 0, 0, w, h);
-            
-            // 設置為裁剪後的圖片
-            croppedImg.src = canvas.toDataURL(); // 轉換為 base64
-        };
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = w;
+        canvas.height = h;
+        
+        // 在 canvas 上繪製圖片的指定區域
+        ctx.drawImage(img, x, y, w, h, 0, 0, w, h);
+        croppedImg.src = canvas.toDataURL(); // 轉換為 base64
         return croppedImg;
     }
     
@@ -89,39 +85,104 @@
         }
     }
     
-    const stampsContainer = document.getElementById('stampsContainer');
-    const stamps = [24, 33, 40, 41, 42, 43, 44, 45, 46, 46, 46];
-    let selectedTile = 0;
-    const tilesArr = [];
-    for (let i = 0; i < stamps.length; i++) {
-        const tile = new Tile(i);
-        
-        const img = createImgAndCrop(`tiles/${stamps[i]}.png`);
-        
-        tile.repEle = img.cloneNode(true);
-        tile.repEle.className = 'rep-img';
-        tile.repEle.addEventListener('click', () => {
-            for (let j = 0; j < tilesArr.length; j++) {
-                tilesArr[j].repEle.className = 'rep-img';
-            }
-            tile.repEle.className = 'rep-img-selected';
-            selectedTile = i;
-        });
-        stampsContainer.appendChild(tile.repEle);
-
-        tile.sketchEle = img.cloneNode(true);
-        tile.sketchEle.className = 'tile-sketch-img';
-
-        tile.blitEle = img.cloneNode(true);
-        tile.blitEle.className = 'tile-blit-img';
-
-        tilesArr.push(tile);
-    }
-    tilesArr[selectedTile].repEle.className = 'rep-img-selected';
-
     // layer stamps
     const layersContainer = document.getElementById('layersContainer');
     const layers = [];
+
+    const stampsContainer = document.getElementById('stampsContainer');
+    let selectedTile = 0;
+    const tilesArr = [];
+    async function loadTilesSets(data) {
+        let idx = 0;
+        for (let tset of data) {
+            if (tset["type"] === "multitiles") {
+                for (let i = 0; i < tset["tiles"].length; i++) {
+                    const tile = new Tile(idx);
+
+                    let img = null;
+
+                    const fp = tset["tiles"][i]["path"];
+                    if (tset["tiles"][i]["cutting-range"] === null) {
+                        img = createImgAndCrop(fp);
+                    } else {
+                        const x = tset["tiles"][i]["cutting-range"]["x"];
+                        const y = tset["tiles"][i]["cutting-range"]["y"];
+                        const w = tset["tiles"][i]["cutting-range"]["w"];
+                        const h = tset["tiles"][i]["cutting-range"]["h"];
+                        img = createImgAndCrop(fp, x, y, w, h);
+                    }
+                    
+                    tile.repEle = img.cloneNode(true);
+                    tile.repEle.className = 'rep-img';
+                    tile.repEle.addEventListener('click', () => {
+                        for (let j = 0; j < tilesArr.length; j++) {
+                            tilesArr[j].repEle.className = 'rep-img';
+                        }
+                        tile.repEle.className = 'rep-img-selected';
+                        selectedTile = tile.code;
+                    });
+                    stampsContainer.appendChild(tile.repEle);
+            
+                    tile.sketchEle = img.cloneNode(true);
+                    tile.sketchEle.className = 'tile-sketch-img';
+            
+                    tile.blitEle = img.cloneNode(true);
+                    tile.blitEle.className = 'tile-blit-img';
+            
+                    tilesArr.push(tile);
+                    idx++;
+                }
+            } else if (tset["type"] === "single-split") {
+                const img = new Image();
+                const path = tset["path"];
+                const width = tset["cutting"]["width"];
+                const height = tset["cutting"]["height"];
+                img.src = `/get-image?image_path=${encodeURIComponent(path)}`;
+                
+                const url = `/get-image-shape?image_path=${encodeURIComponent(path)}`;
+                const response = await fetch(url, { method: 'GET' });
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                const imgShape = await response.json();
+                
+                for (let j = 0; j < imgShape["height"]; j += height) {
+                    for (let i = 0; i < imgShape["width"]; i += width) {
+                        const croppedImg = new Image();
+                        const canvas = document.createElement('canvas');
+                        const ctx = canvas.getContext('2d');
+                        canvas.width = width;
+                        canvas.height = height;
+                        
+                        ctx.drawImage(img, i, j, width, height, 0, 0, width, height);
+                        croppedImg.src = canvas.toDataURL(); // 轉換為 base64
+
+                        const tile = new Tile(idx);
+                        tile.repEle = croppedImg.cloneNode(true);
+                        tile.repEle.className = 'rep-img';
+                        tile.repEle.addEventListener('click', () => {
+                            for (let j = 0; j < tilesArr.length; j++) {
+                                tilesArr[j].repEle.className = 'rep-img';
+                            }
+                            tile.repEle.className = 'rep-img-selected';
+                            selectedTile = tile.code;
+                        });
+                        stampsContainer.appendChild(tile.repEle);
+                
+                        tile.sketchEle = croppedImg.cloneNode(true);
+                        tile.sketchEle.className = 'tile-sketch-img';
+                
+                        tile.blitEle = croppedImg.cloneNode(true);
+                        tile.blitEle.className = 'tile-blit-img';
+                
+                        tilesArr.push(tile);
+                        idx++;
+                    }
+                }
+            }
+        }
+        tilesArr[selectedTile].repEle.className = 'rep-img-selected';
+    }
 
     class Block {
         constructor(x, y, screen) {
@@ -588,13 +649,29 @@
             canvas.setPos(newLeft, newTop);
         }
     }, { passive: false });
-    
-    // test map
-    let tilesLayer;
-    tilesLayer = canvas.addTilesLayer('test', 0);
-    tilesLayer.setTile(0, 0, 1);
-    tilesLayer.setTile(3, 3, 2);
-    tilesLayer = canvas.addTilesLayer('test1lzsodifjsdifjszdofijzsd;foizsjd;fi', 1);
-    tilesLayer.setTile(0, 1, 3);
-    canvas.selectLayer('test');
+
+    async function main() {
+        // fetch tiles sets info
+        const url = '/get-tiles-sets';
+        let response = await fetch(url, { method: 'GET' });
+        if (!response.ok) {
+            throw new Error(response.statusText);
+        }
+        const data = await response.json();
+
+        // load tiles sets
+        response = await loadTilesSets(data);
+        
+        // test map
+        let tilesLayer;
+        tilesLayer = canvas.addTilesLayer('test', 0);
+        tilesLayer.setTile(0, 0, 1);
+        tilesLayer.setTile(3, 3, 2);
+        tilesLayer = canvas.addTilesLayer('test1lzsodifjsdifjszdofijzsd;foizsjd;fi', 1);
+        tilesLayer.setTile(0, 1, 3);
+        canvas.selectLayer('test');
+    }
+
+    main();
+
 })();

@@ -5,15 +5,25 @@
         "tiles": [
             {
                 "path": "D:\\Projects\\Python\\pygame\\The-Pygame-RPG-Maker\\Maker\\app\\tiles\\24.png", 
-                "cutting-range": null
+                "cutting-range": {
+                    "x": 0, 
+                    "y": 0, 
+                    "w": 84,
+                    "h": 84
+                }
             }, 
             {
                 "path": "D:\\Projects\\Python\\pygame\\The-Pygame-RPG-Maker\\Maker\\app\\tiles\\33.png", 
                 "cutting-range": null
             }, 
             {
-                "path": "D:\\Projects\\Python\\pygame\\The-Pygame-RPG-Maker\\Maker\\app\\tiles\\36.png", 
-                "cutting-range": null
+                "path": "D:\\Projects\\Python\\pygame\\pygame-rpg-2-graphics-edit\\Graphics\\Tilesets\\Dungeon_A1.png", 
+                "cutting-range": {
+                    "x": 0, 
+                    "y": 0, 
+                    "w": 64,
+                    "h": 64
+                }
             }, 
             {
                 "path": "D:\\Projects\\Python\\pygame\\The-Pygame-RPG-Maker\\Maker\\app\\tiles\\40.png", 
@@ -40,7 +50,7 @@
     {
         "name": "test2", 
         "type": "single-split", 
-        "path": "D:\\Projects\\Python\\pygame\\The-Pygame-RPG-Maker\\Maker\\app\\tiles\\24.png",
+        "path": "D:\\Projects\\Python\\pygame\\pygame-rpg-2-graphics-edit\\Graphics\\Tilesets\\Dungeon_A1.png",
         "cutting": {
             "width": 64,
             "height": 64

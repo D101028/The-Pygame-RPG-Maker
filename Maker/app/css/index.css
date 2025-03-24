@@ -73,8 +73,7 @@ body {
 }
 .rep-img {
     cursor: pointer;
-    outline: 1px solid white;
-    margin: 2px;
+    margin: 1.5px;
     width: 64px;
     height: 64px;
     object-fit: contain;
@@ -82,7 +81,7 @@ body {
 .rep-img-selected {
     cursor: pointer;
     outline: 2px solid red;
-    margin: 2px;
+    margin: 1.5px;
     width: 64px;
     height: 64px;
     object-fit: contain;

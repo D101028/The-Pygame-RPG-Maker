@@ -52,7 +52,6 @@
     function createImgAndCrop(path, x = null, y = null, w = null, h = null) { 
         return new Promise((resolve, reject) => {
             const img = new Image();
-            img.src = `/get-image?image_path=${encodeURIComponent(path)}`;
             img.onload = () => {
                 if (x === null || y === null || w === null || h === null) {
                     return resolve(img); // 如果沒有裁剪區域，直接回傳圖片
@@ -67,12 +66,13 @@
                 ctx.drawImage(img, x, y, w, h, 0, 0, w, h);
                 
                 const croppedImg = new Image();
-                croppedImg.src = canvas.toDataURL(); // 轉換為 base64
                 
                 croppedImg.onload = () => resolve(croppedImg);
                 croppedImg.onerror = reject;
+                croppedImg.src = canvas.toDataURL(); // 轉換為 base64
             };
             img.onerror = reject;
+            img.src = `/get-image?image_path=${encodeURIComponent(path)}`;
         });
     }
     
@@ -102,10 +102,11 @@
     const tilesArr = [];
     let tileSetsLoaded = false;
     async function loadTilesSets(data) {
-        let idx = 0;
+        let idx = -1;
         for (let tset of data) {
             if (tset["type"] === "multitiles") {
                 for (let i = 0; i < tset["tiles"].length; i++) {
+                    idx++;
                     const tile = new Tile(idx);
 
                     let img = null;
@@ -139,23 +140,22 @@
                     tile.blitEle.className = 'tile-blit-img';
             
                     tilesArr.push(tile);
-                    idx++;
                 }
             } else if (tset["type"] === "single-split") {
                 const img = new Image();
                 const path = tset["path"];
                 const width = tset["cutting"]["width"];
                 const height = tset["cutting"]["height"];
-                img.src = `/get-image?image_path=${encodeURIComponent(path)}`;
+                const url = `/get-image?image_path=${encodeURIComponent(path)}`;
                 
-                const url = `/get-image-shape?image_path=${encodeURIComponent(path)}`;
-                const response = await fetch(url, { method: 'GET' });
+                const shapeUrl = `/get-image-shape?image_path=${encodeURIComponent(path)}`;
+                const response = await fetch(shapeUrl, { method: 'GET' });
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
                 const imgShape = await response.json();
 
-                console.log('check1');
+                // load img
                 await new Promise((resolve, reject) => {
                     img.onload = () => {
                         for (let j = 0; j < imgShape["height"]; j += height) {
@@ -169,6 +169,7 @@
                                 ctx.drawImage(img, i, j, width, height, 0, 0, width, height);
                                 croppedImg.src = canvas.toDataURL(); // 轉換為 base64
 
+                                idx++;
                                 const tile = new Tile(idx);
                                 tile.repEle = croppedImg.cloneNode(true);
                                 tile.repEle.className = 'rep-img';
@@ -188,14 +189,16 @@
                                 tile.blitEle.className = 'tile-blit-img';
                         
                                 tilesArr.push(tile);
-                                idx++;
                             }
                         }
+                        
                         resolve();
                     }
-                    img.onerror = reject
+                    img.onerror = reject;
+                    img.src = url;
+
+                    if (img.complete) resolve();
                 });
-                console.log('check2');
             }
         }
         tilesArr[selectedTile].repEle.className = 'rep-img-selected';
@@ -701,6 +704,8 @@
     }
 
     async function main() {
+        const noteLine = document.getElementById('noteLine');
+
         // fetch tiles sets info
         const url = '/get-tiles-sets';
         let response = await fetch(url, { method: 'GET' });
@@ -714,6 +719,8 @@
 
         // load tiles sets
         await loadTilesSets(data);
+
+        noteLine.innerText = 'Loaded';
         
         // init test funciton
         initTest();

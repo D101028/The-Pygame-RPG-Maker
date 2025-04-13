@@ -76,13 +76,16 @@
         });
     }
     
+    let tileCode = 0;
     // tile class
     class Tile {
-        constructor(code) {
-            this.code = code;
+        constructor() {
+            this.code = tileCode;
             this.repEle = null; // shown in stamp page
             this.sketchEle = null; // shown when sketching
             this.blitEle = null; // shown in canvas
+
+            tileCode++;
         }
     }
 
@@ -102,12 +105,10 @@
     const tilesArr = [];
     let tileSetsLoaded = false;
     async function loadTilesSets(data) {
-        let idx = -1;
         for (let tset of data) {
             if (tset["type"] === "multitiles") {
                 for (let i = 0; i < tset["tiles"].length; i++) {
-                    idx++;
-                    const tile = new Tile(idx);
+                    const tile = new Tile();
 
                     let img = null;
 
@@ -148,12 +149,26 @@
                 const height = tset["cutting"]["height"];
                 const url = `/get-image?image_path=${encodeURIComponent(path)}`;
                 
+                // fetch img shape
                 const shapeUrl = `/get-image-shape?image_path=${encodeURIComponent(path)}`;
-                const response = await fetch(shapeUrl, { method: 'GET' });
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                const imgShape = await response.json();
+                let imgShape = null;
+                await new Promise((resolve, reject) => {
+                    fetch(shapeUrl, { method: 'GET' })
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Network response was not ok');
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            imgShape = data;
+                            resolve();
+                        })
+                        .catch(error => {
+                            console.error('Error fetching image shape:', error);
+                            reject(error);
+                        });
+                })
 
                 // load img
                 await new Promise((resolve, reject) => {
@@ -169,8 +184,7 @@
                                 ctx.drawImage(img, i, j, width, height, 0, 0, width, height);
                                 croppedImg.src = canvas.toDataURL(); // 轉換為 base64
 
-                                idx++;
-                                const tile = new Tile(idx);
+                                const tile = new Tile();
                                 tile.repEle = croppedImg.cloneNode(true);
                                 tile.repEle.className = 'rep-img';
                                 tile.repEle.addEventListener('click', () => {

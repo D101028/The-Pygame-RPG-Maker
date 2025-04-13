@@ -706,6 +706,15 @@
         }, { passive: false });
     }
 
+    async function fetchTilesSetsInfo() {
+        const url = '/get-tiles-sets';
+        let response = await fetch(url, { method: 'GET' });
+        if (!response.ok) {
+            throw new Error(response.statusText);
+        }
+        const data = await response.json();
+    }
+
     function initTest() {
         // test map
         let tilesLayer;
@@ -721,12 +730,7 @@
         const noteLine = document.getElementById('noteLine');
 
         // fetch tiles sets info
-        const url = '/get-tiles-sets';
-        let response = await fetch(url, { method: 'GET' });
-        if (!response.ok) {
-            throw new Error(response.statusText);
-        }
-        const data = await response.json();
+        const data = await fetchTilesSetsInfo();
 
         // register events
         registerEvents();

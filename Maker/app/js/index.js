@@ -713,15 +713,16 @@
             throw new Error(response.statusText);
         }
         const data = await response.json();
+        return data;
     }
 
     function initTest() {
         // test map
         let tilesLayer;
-        tilesLayer = canvas.addTilesLayer('test', 0);
+        tilesLayer = canvas.addTilesLayer('Layer1', 0);
         tilesLayer.setTile(0, 0, 1);
         tilesLayer.setTile(3, 3, 2);
-        tilesLayer = canvas.addTilesLayer('test1lzsodifjsdifjszdofijzsd;foizsjd;fi', 1);
+        tilesLayer = canvas.addTilesLayer('Layer2', 1);
         tilesLayer.setTile(0, 1, 3);
         canvas.selectLayer('test');
     }
